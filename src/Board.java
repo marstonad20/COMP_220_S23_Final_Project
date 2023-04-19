@@ -6,20 +6,9 @@ import java.util.ArrayList;
 public class Board {
 
     /**
-     * The number of rows/cols in this square checkerboard
+     * Contains the Pieces on the checkerboard
      */
-    private final int SIZE = 8;
-
-    /**
-     * A 2D array representing the state of this checkerboard
-     * Key:
-     * r = red pawn
-     * b = black pawn
-     * R = red king
-     * B = black king
-     * ' ' = empty square
-     */
-    private char[][] board = new char[SIZE][SIZE];
+    private ArrayList<ArrayList<Piece>> board = new ArrayList<ArrayList<Piece>>(8);
 
     /**
      * Creates a checkers board with the checkers arrayed in the
@@ -34,30 +23,34 @@ public class Board {
      * @param sq location on the board represented by a Square object
      * @return the kind of checker piece in that space
      */
-    public char getSquareValue(Square sq) {
-        return ' ';
+    public Piece getPiece(Square sq) {
+        return new Piece('b');
     }
 
     /**
-     * Sets the kind of checker piece on the board to a particular kind
-     * @param sq location on the board represented by a Square object
-     * @param team the kind of value that space will be set to
+     * Puts a Piece in a location on the board, or changes a Piece that was there
+     * @param sq
+     * @param pc
      */
-    public void setSquareValue(Square sq, char team) {
-
-    }
-
-    /**
-     *
-     */
-    public void movePiece(Square startSquare, Square endSquare) {
+    public void setPiece(Square sq, Piece pc) {
 
     }
 
     /**
-     *
+     * Moves a piece from the location of the startSquare of the passed in Move to the location
+     * of the endSquare of the Move
      */
-    public void jumpPiece(Square startSquare, Square endSquare) {
+    public void movePiece(Move move) {
 
+    }
+
+    /**
+     * Checks if the given piece is eligible for kingship, and, if it is, returns
+     * a King with the same color as the Piece passed in
+     * @param pc
+     * @return
+     */
+    public King promote(Piece pc) {
+        return new King('b');
     }
 }
