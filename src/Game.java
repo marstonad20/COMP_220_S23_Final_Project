@@ -38,6 +38,10 @@ public class Game {
         return new ArrayList<Move>();
     }
 
+    /**
+     * Gets the next most recent Board and makes it the current Board,
+     * thus undoing a move
+     */
     public void undo() {
 
     }
