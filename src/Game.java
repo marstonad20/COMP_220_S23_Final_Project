@@ -1,12 +1,11 @@
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Handles gameplay logic of a game of Checkers
  */
 public class Game {
 
-    private Stack<Board> boards = new Stack<Board>();
+    private Deque<Board> boards = new LinkedList<Board>();
     private Board currBoard = new Board();
 
     /**
@@ -17,26 +16,36 @@ public class Game {
     }
 
     /**
-     *Checks all pieces of a color on the board to determine which can
-     * jump, and, if any can, to require the player to make one of those jumps
-     * Is called at start of turn and after every jump
-     * @param color
-     * @return
+     * Asks a player for a board location, parses their input,
+     * and returns an int array representing a board location (x,y)
      */
-    public ArrayList<Move> checkForJumps(char color) {
-        return new ArrayList<Move>();
+    public int[] getPlayerInput(Scanner in) {
+        int[] ints = new int[2];
+        return ints;
     }
 
     /**
-     * Checks all pieces of a color on the board to determine which can
-     * move and to where, and if none can move, the other player wins.
-     * Is called at start of turn after checkForJumps()
-     * @param color
-     * @return
+     * Determines if a selected piece by the player is valid to move or have jump
      */
-    public ArrayList<Move> checkForMoves(char color) {
-        return new ArrayList<Move>();
+    public boolean validPieceToMove(int[] location) {
+        return false;
     }
+
+
+    /**
+     * Determines if a selected ending location for a checker is empty, whether it is a jump or a move
+     */
+    public boolean validTargetLocation(int[] location) {
+        return false;
+    }
+
+    /**
+     * Checks if a piece is valid for promotion, and then promotes it if so
+     */
+    public void promote(int[] pieceLocation, char player) {
+
+    }
+
 
     /**
      * Gets the next most recent Board and makes it the current Board,
