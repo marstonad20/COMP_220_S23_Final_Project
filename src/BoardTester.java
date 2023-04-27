@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,10 @@ public class BoardTester {
 
         testBoard.setValue(new int[] {4,1}, 'r');
         testBoard.printBoard();
+
+        Scanner in = new Scanner(System.in); // tests Game's getPlayerInput()
+        Game testGame = new Game();
+        testGame.getPlayerInput(in);
     }
 
 //    @Test public void getValue() {

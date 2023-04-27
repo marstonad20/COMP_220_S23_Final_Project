@@ -9,7 +9,8 @@ public class Game {
     private Board currBoard = new Board();
 
     /**
-     * Handles passing the turn between the two players
+     * Handles passing the turn between the two players and determining whether the moves the player
+     * wants to make are valid.
      */
     public void gameLoop() {
 
@@ -18,9 +19,26 @@ public class Game {
     /**
      * Asks a player for a board location, parses their input,
      * and returns an int array representing a board location (x,y)
+     * Rows and columns are numbered starting at 0
      */
     public int[] getPlayerInput(Scanner in) {
         int[] ints = new int[2];
+        // this text formatting is very WIP:
+        boolean valid = false;
+        while (!valid) {
+            System.out.println("Please input row,col:");
+            String playerInput = in.next();
+            if (Character.isDigit(playerInput.charAt(0)) && (Character.isDigit(playerInput.charAt(2)))
+                    && playerInput.charAt(1) == ',' && playerInput.length() == 3) {
+                valid = true;
+                int row = (int) playerInput.charAt(0);
+                int col = (int) playerInput.charAt(2);
+                ints[0] = row;
+                ints[1] = col;
+            } else {
+                System.out.println("Invalid input.");
+            }
+        }
         return ints;
     }
 
