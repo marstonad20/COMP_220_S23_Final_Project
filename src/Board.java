@@ -165,10 +165,13 @@ public class Board {
     /**
      * Puts a Piece in a location on the board, or changes a Piece that was there
      *
-     * @param loc location array of board coords
+     * @param loc location array of board coords for set value
      * @param p   character to set space to
      */
     public void setValue(int[] loc, char p) {
+        int x = loc[0];
+        int y = loc[1];
 
+        currentBoard[x][y] = p;
     }
 }

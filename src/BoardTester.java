@@ -13,7 +13,11 @@ public class BoardTester {
         Board testBoard = new Board();
         testBoard.printBoard();
 
-        }
+        System.out.println(testBoard.getValue(new int[] {0, 5}));
+
+        testBoard.setValue(new int[] {4,1}, 'r');
+        testBoard.printBoard();
+    }
 
 //    @Test public void getValue() {
 //        final char black = 'b';
