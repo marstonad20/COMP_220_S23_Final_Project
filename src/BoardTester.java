@@ -11,17 +11,26 @@ public class BoardTester {
 
     public static void main(String[] args) throws Exception {
 
-        Board testBoard = new Board();
-        testBoard.printBoard();
+        Board boardConstructor = new Board();
+        System.out.println("boardConstructor printout: ");
+        boardConstructor.printBoard();
 
-        System.out.println(testBoard.getValue(new int[] {0, 5}));
+        Board testBoard = new Board();
+        System.out.println("testBoard [0,5] value: '" + Board.getValue(new int[] {0, 5}) + "'");                // should be ' ' (space)
+//        System.out.println(testBoard.getValue(new int[] {0, 5}));
+        System.out.println("testBoard [5,0] value: '" + Board.getValue(new int[] {5, 0}) + "'");                // should be 'r'
+//        System.out.println(testBoard.getValue(new int[] {5, 0}));
 
         testBoard.setValue(new int[] {4,1}, 'r');
+        System.out.println("testBoard with [4,1] set to r");
         testBoard.printBoard();
 
         Scanner in = new Scanner(System.in); // tests Game's getPlayerInput()
         Game testGame = new Game();
-        testGame.getPlayerInput(in);
+        System.out.println(Arrays.toString(testGame.getPlayerInput(in)));
+
+        System.out.println("getValue of user entered location in testGame: ");
+        System.out.println(Board.getValue(testGame.getPlayerInput(in)));
     }
 
 //    @Test public void getValue() {

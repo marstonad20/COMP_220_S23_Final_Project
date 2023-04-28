@@ -5,7 +5,6 @@ import java.util.Scanner;
  * Represents the state of a board in a game of Checkers
  */
 public class Board {
-
     /**
      * The number of rows and columns in a square checkers board
      */
@@ -13,7 +12,7 @@ public class Board {
     /**
      * 2D array representing state of checkers board
      */
-    private char[][] currentBoard = new char[SIZE][SIZE];
+    private static char[][] currentBoard = new char[SIZE][SIZE];
 
     /**
      * Creates a checkers board with the checkers arrayed in the
@@ -106,42 +105,45 @@ public class Board {
 
         System.out.println();
 
-        System.out.println("| " + currentBoard[0][0] + " | " + currentBoard[0][1] + " | " + currentBoard[0][2] + " | " +
+        System.out.println("     0   1   2   3   4   5   6   7");
+
+        System.out.println(" 0 | " + currentBoard[0][0] + " | " + currentBoard[0][1] + " | " + currentBoard[0][2] + " | " +
                 currentBoard[0][3] + " | " + currentBoard[0][4] + " | " + currentBoard[0][5] + " | " + currentBoard[0][6]
                 + " | " + currentBoard[0][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[1][0] + " | " + currentBoard[1][1] + " | " + currentBoard[1][2] + " | " +
+        System.out.println(" 1 | " + currentBoard[1][0] + " | " + currentBoard[1][1] + " | " + currentBoard[1][2] + " | " +
                 currentBoard[1][3] + " | " + currentBoard[1][4] + " | " + currentBoard[1][5] + " | " + currentBoard[1][6]
                 + " | " + currentBoard[1][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[2][0] + " | " + currentBoard[2][1] + " | " + currentBoard[2][2] + " | " +
+        System.out.println(" 2 | " + currentBoard[2][0] + " | " + currentBoard[2][1] + " | " + currentBoard[2][2] + " | " +
                 currentBoard[2][3] + " | " + currentBoard[2][4] + " | " + currentBoard[2][5] + " | " + currentBoard[2][6]
                 + " | " + currentBoard[2][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[3][0] + " | " + currentBoard[3][1] + " | " + currentBoard[3][2] + " | " +
+        System.out.println(" 3 | " + currentBoard[3][0] + " | " + currentBoard[3][1] + " | " + currentBoard[3][2] + " | " +
                 currentBoard[3][3] + " | " + currentBoard[3][4] + " | " + currentBoard[3][5] + " | " + currentBoard[3][6]
                 + " | " + currentBoard[3][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[4][0] + " | " + currentBoard[4][1] + " | " + currentBoard[4][2] + " | " +
+        System.out.println(" 4 | " + currentBoard[4][0] + " | " + currentBoard[4][1] + " | " + currentBoard[4][2] + " | " +
                 currentBoard[4][3] + " | " + currentBoard[4][4] + " | " + currentBoard[4][5] + " | " + currentBoard[4][6]
                 + " | " + currentBoard[4][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[5][0] + " | " + currentBoard[5][1] + " | " + currentBoard[5][2] + " | " +
+        System.out.println(" 5 | " + currentBoard[5][0] + " | " + currentBoard[5][1] + " | " + currentBoard[5][2] + " | " +
                 currentBoard[5][3] + " | " + currentBoard[5][4] + " | " + currentBoard[5][5] + " | " + currentBoard[5][6]
                 + " | " + currentBoard[5][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[6][0] + " | " + currentBoard[6][1] + " | " + currentBoard[6][2] + " | " +
+        System.out.println(" 6 | " + currentBoard[6][0] + " | " + currentBoard[6][1] + " | " + currentBoard[6][2] + " | " +
                 currentBoard[6][3] + " | " + currentBoard[6][4] + " | " + currentBoard[6][5] + " | " + currentBoard[6][6]
                 + " | " + currentBoard[6][7] + " |");
-        System.out.println("---------------------------------");
+        System.out.println("   ---------------------------------");
 
-        System.out.println("| " + currentBoard[7][0] + " | " + currentBoard[7][1] + " | " + currentBoard[7][2] + " | " +
+
+        System.out.println(" 7 | " + currentBoard[7][0] + " | " + currentBoard[7][1] + " | " + currentBoard[7][2] + " | " +
                 currentBoard[7][3] + " | " + currentBoard[7][4] + " | " + currentBoard[7][5] + " | " + currentBoard[7][6]
                 + " | " + currentBoard[7][7] + " |");
         // System.out.println("====================================");
@@ -155,11 +157,11 @@ public class Board {
      * @param loc integer array of coords on the board representing a location
      * @return the kind of checker piece in that space
      */
-    public char getValue(int[] loc) {
-        int x = loc[0];
-        int y = loc[1];
+    public static char getValue(int[] loc) {
+//        int x = loc[0];
+//        int y = loc[1];
 
-        return (currentBoard[x][y]);
+        return (currentBoard[loc[0]] [loc[1]]);
     }
 
     /**
@@ -169,9 +171,9 @@ public class Board {
      * @param p   character to set space to
      */
     public void setValue(int[] loc, char p) {
-        int x = loc[0];
-        int y = loc[1];
+//        int x = loc[0];
+//        int y = loc[1];
 
-        currentBoard[x][y] = p;
+        currentBoard[loc[0]] [loc[1]] = p;
     }
 }
