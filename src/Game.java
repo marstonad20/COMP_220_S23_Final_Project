@@ -24,22 +24,20 @@ public class Game {
      */
     public int[] getPlayerInput(Scanner in) {
         int[] ints = new int[2];
-        // this text formatting is very WIP:
         boolean valid = false;
         while (!valid) {
             System.out.println("Please input 'row,col'");
             String playerInput = in.next();
-            if (Character.isDigit(playerInput.charAt(0)) && (Character.isDigit(playerInput.charAt(2)))
-                    && playerInput.charAt(1) == ',' && playerInput.length() == 3) {
+            if (playerInput.length() == 3
+                    && Character.isDigit(playerInput.charAt(0))
+                    && (Character.isDigit(playerInput.charAt(2)))
+                    && playerInput.charAt(1) == ',') {
                 valid = true;
-                int row = (int) playerInput.charAt(0);
-                int col = (int) playerInput.charAt(2);
-                //TODO: To make the getPlayerInput return expected values I had to subtract 48, later found out that ASCII value for 0 is 48,
-                // and this clears things up to some degree... Since we know the problem I am leaving in the somewhat strange fix of
-                // subtracting 48 since the problem shouldn't show up anywhere else, "final" solution would be to make sure that row and col
-                // are read as ints and not as ascii characters that are cast to integer values
-                ints[0] = row-48;
-                ints[1] = col-48;
+                // this implementation reads the chars as ints directly
+                int row = Character.getNumericValue(playerInput.charAt(0));
+                int col = Character.getNumericValue(playerInput.charAt(2));
+                ints[0] = row;
+                ints[1] = col;
             } else {
                 System.out.println("Invalid input.");
             }
@@ -65,16 +63,63 @@ public class Game {
 
 
     /**
-     * Determines if a selected ending location for a checker is empty, whether it is a jump or a move
+     * Makes sure the ending location of a move or jump is empty, on the board, and either a valid move or jump
      */
-    public boolean validTargetLocation(int[] location) {
-        // if destination location is full, invalid move
-        if (Board.getValue(location) == ' ') {
-            return true;
-        }
-        // TODO: if destination is not within 2 spaces (in any direction) of starting piece, invalid move
+    public boolean validTargetLocation(int[] startLocation, int[] endLocation) {
+        if (Board.getValue(endLocation) == ' ') { // only empty destinations are valid
 
-        return false;
+            int x1 = startLocation[0];
+            int y1 = startLocation[1];
+            int x2 = endLocation[0];
+            int y2 = endLocation[1];
+            char pieceType = Board.getValue(startLocation);
+
+            // checks that the destination is actually on the board
+            if (x2 > 7 || y2 > 7) {
+                return false; // the destination is off the board
+            }
+
+            if (pieceType == 'b') {
+                // handle black pawn valid moves
+                // y has to increment by 1, and x can either increment or decrement by 1
+                // or y has to increment by 2, and x can either increment or decrement by 2
+                if ((y2 - y1 == 1 && (x2 - x1 == 1 || x2 - x1 == -1)) || // moves
+                        (y2 - y1 == 2 && (x2 - x1 == 2 || x2 - x1 == -1))) { // jumps
+                    return true;
+                } else {
+                    return false; // invalid move or jump
+                }
+            }
+            else if (pieceType == 'r') {
+                // handle red pawn valid moves
+                // y has to decrement by 1, and x can either increment or decrement by 1
+                // or y has to decrement by 2, and x can either increment or decrement by 2
+                if ((y2 - y1 == -1 && (x2 - x1 == 1 || x2 - x1 == -1)) || // moves
+                        (y2 - y1 == -2 && (x2 - x1 == 2 || x2 - x1 == -1))) { // jumps
+                    return true;
+                } else {
+                    return false; // invalid move or jump
+                }
+            }
+            else if (Character.isUpperCase(pieceType)) {
+                // handle red king valid moves
+                // handle black king valid moves
+                // y can either increment or decrement by 1, and so can x
+                // or y can either increment or decrement by 2, and so can x
+                if (((y2 - y1 == 1 || y2 - y1 == -1) && (x2 - x1 == 1 || x2 - x1 == -1)) || // moves
+                        (y2 - y1 == 2 || y2 - y1 == -2) && (x2 - x1 == 2 || x2 - x1 == -2)) { // jumps
+                    return true;
+                } else {
+                    return false; // invalid move or jump
+                }
+            }
+            else {
+                return false; // invalid piece type
+            }
+        }
+        else {
+            return false; // the destination is full
+        }
     }
 
     /**
