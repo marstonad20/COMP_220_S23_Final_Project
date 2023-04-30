@@ -158,9 +158,6 @@ public class Board {
      * @return the kind of checker piece in that space
      */
     public static char getValue(int[] loc) {
-//        int x = loc[0];
-//        int y = loc[1];
-
         return (currentBoard[loc[0]] [loc[1]]);
     }
 
