@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.math.*;
 
 /**
  * Represents the state of a board in a game of Checkers
@@ -178,13 +179,28 @@ public class Board {
     }
 
 
-    public static void move(int[] start, int[] end, char player) {
+    public static void move(int[] start, int[] end) {
         // if starting space holds a piece and if move is valid
-        if (Game.validPieceToMove(start) && Game.validMove(start, end)) {
-            Board.setValue(end, player);
+        if (Game.validMove(start, end)) {
+            Board.setValue(end, Board.getValue(start));
             Board.setValue(start, ' ');
         } else {
             System.out.println("This is an invalid move, please try again");
+        }
+    }
+
+    public static void jump (int[] start, int[] end) {
+        int x1 = start[0];
+        int y1 = start[1];
+        int x2 = end[0];
+        int y2 = end[1];
+
+        if (Game.validJump(start, end)) {
+            Board.setValue(end, Board.getValue(start));
+            Board.setValue(start, ' ');
+            Board.setValue(new int[] {(Math.max(x1,x2) - 1), (Math.max(y1,y2) - 1)}, ' ');
+        } else {
+            System.out.println("This is an invalid jump, please try again");
         }
     }
 }

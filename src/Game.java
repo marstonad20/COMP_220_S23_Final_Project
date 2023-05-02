@@ -80,7 +80,7 @@ public class Game {
             return false;
         }
 
-        if (x2 > 7 || y2 > 7) { // target location has to be on the board
+        if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
             return false;
         }
 
@@ -125,7 +125,7 @@ public class Game {
      * @param endLoc The location (row,col) that the player wants to jump the piece to
      * @return whether this jump is valid
      */
-    public boolean validJump(int[] startLoc, int[] endLoc) {
+    public static boolean validJump(int[] startLoc, int[] endLoc) {
         int x1 = startLoc[0];
         int y1 = startLoc[1];
         int x2 = endLoc[0];

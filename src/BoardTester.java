@@ -35,10 +35,30 @@ public class BoardTester {
 //        Game testGame = new Game();
 //        System.out.println(Arrays.toString(testGame.getPlayerInput(in)));
 
-        System.out.println("move with hardcoded location:");
+        System.out.println("move with hardcoded location: ");
         System.out.println("is valid hardcoded starting loc? " + Game.validPieceToMove(new int[] {2,0}));
         System.out.println("is valid hardcoded move? " + Game.validMove(new int[] {2,1}, new int[] {3,2}));
-        Board.move(new int[] {2,1}, new int[] {3,2}, 'b');
+        Board.move(new int[] {2,1}, new int[] {3,2});
+        testBoard.printBoard();
+
+        Board.move(new int[] {5,6}, new int[] {4,7});
+        Board.move(new int[] {3,2}, new int[] {4,3});
+        System.out.println("Board after 2 hardcoded moves");
+        testBoard.printBoard();
+        System.out.println("jump with hardcoded location: (5,4 -> 3,2) ");
+        Board.jump(new int[] {5,4}, new int[] {3,2});
+        testBoard.printBoard();
+//        System.out.println("is valid hardcoded starting loc? " + Game.validPieceToMove(new int[] {5,4}));
+//        System.out.println("is valid hardoced jump? " + Game.validMove)
+        System.out.println("move with user input locations? (4,7 -> 3,6) can we break it? ");    // spoiler alert, breaking it the first time wasn't very hard...
+        System.out.println("is valid user entered move? " + Game.validMove(new int[] {4,7}, new int[] {3,6}));
+        Board.move(testGame.getPlayerInput(in),testGame.getPlayerInput(in));
+        testBoard.printBoard();
+
+        System.out.println("jump with user input locations? (2,3 -> 4,1) can we break this one? ");
+        System.out.println("is valid user entered jump? " + Game.validJump(new int[] {2,3}, new int[] {4,1}));
+
+        Board.jump(testGame.getPlayerInput(in), testGame.getPlayerInput(in));
         testBoard.printBoard();
 
 //        System.out.println("getValue of user entered location in testGame: ");
