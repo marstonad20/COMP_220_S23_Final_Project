@@ -61,64 +61,113 @@ public class Game {
         return false;
     }
 
-
     /**
-     * Makes sure the ending location of a move or jump is empty, on the board, and either a valid move or jump
+     * Checks if a selected move by the player is valid
+     * @param startLoc The location (row,col) of the piece currently
+     * @param endLoc The location (row,col) that the player wants to move the piece to
+     * @return whether this move is valid
      */
-    public boolean validTargetLocation(int[] startLocation, int[] endLocation) {
-        if (Board.getValue(endLocation) == ' ') { // only empty destinations are valid
+    public boolean validMove(int[] startLoc, int[] endLoc) {
+        int x1 = startLoc[0];
+        int y1 = startLoc[1];
+        int x2 = endLoc[0];
+        int y2 = endLoc[1];
+        char pieceType = Board.getValue(startLoc);
 
-            int x1 = startLocation[0];
-            int y1 = startLocation[1];
-            int x2 = endLocation[0];
-            int y2 = endLocation[1];
-            char pieceType = Board.getValue(startLocation);
+        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
+            return false;
+        }
 
-            // checks that the destination is actually on the board
-            if (x2 > 7 || y2 > 7) {
-                return false; // the destination is off the board
-            }
+        if (x2 > 7 || y2 > 7) { // target location has to be on the board
+            return false;
+        }
 
-            if (pieceType == 'b') {
-                // handle black pawn valid moves
-                // y has to increment by 1, and x can either increment or decrement by 1
-                // or y has to increment by 2, and x can either increment or decrement by 2
-                if ((y2 - y1 == 1 && (x2 - x1 == 1 || x2 - x1 == -1)) || // moves
-                        (y2 - y1 == 2 && (x2 - x1 == 2 || x2 - x1 == -1))) { // jumps
-                    return true;
-                } else {
-                    return false; // invalid move or jump
-                }
+        if (pieceType == 'b') {
+            // handle black pawn valid moves
+            // y has to increment by 1, and x can either increment or decrement by 1
+            if ((y2 - y1 == 1 && (x2 - x1 == 1 || x2 - x1 == -1))) {
+                return true;
+            } else {
+                return false; // invalid move
             }
-            else if (pieceType == 'r') {
-                // handle red pawn valid moves
-                // y has to decrement by 1, and x can either increment or decrement by 1
-                // or y has to decrement by 2, and x can either increment or decrement by 2
-                if ((y2 - y1 == -1 && (x2 - x1 == 1 || x2 - x1 == -1)) || // moves
-                        (y2 - y1 == -2 && (x2 - x1 == 2 || x2 - x1 == -1))) { // jumps
-                    return true;
-                } else {
-                    return false; // invalid move or jump
-                }
+        }
+        else if (pieceType == 'r') {
+            // handle red pawn valid moves
+            // y has to decrement by 1, and x can either increment or decrement by 1
+            if ((y2 - y1 == -1 && (x2 - x1 == 1 || x2 - x1 == -1))) {
+                return true;
+            } else {
+                return false; // invalid move
             }
-            else if (Character.isUpperCase(pieceType)) {
-                // handle red king valid moves
-                // handle black king valid moves
-                // y can either increment or decrement by 1, and so can x
-                // or y can either increment or decrement by 2, and so can x
-                if (((y2 - y1 == 1 || y2 - y1 == -1) && (x2 - x1 == 1 || x2 - x1 == -1)) || // moves
-                        (y2 - y1 == 2 || y2 - y1 == -2) && (x2 - x1 == 2 || x2 - x1 == -2)) { // jumps
-                    return true;
-                } else {
-                    return false; // invalid move or jump
-                }
-            }
-            else {
-                return false; // invalid piece type
+        }
+        else if (Character.isUpperCase(pieceType)) {
+            // handle red king valid moves
+            // handle black king valid moves
+            // y can either increment or decrement by 1, and so can x
+            if (((y2 - y1 == 1 || y2 - y1 == -1) && (x2 - x1 == 1 || x2 - x1 == -1))) {
+                return true;
+            } else {
+                return false; // invalid move
             }
         }
         else {
-            return false; // the destination is full
+            return false; // invalid piece type
+        }
+    }
+
+    //TODO: this will allow the a piece to jump in an arbitrary direction, not necessarily a direction that has
+    //TODO: a jumpable piece
+    /**
+     * Checks if a selected jump by the player is valid
+     * @param startLoc The location (row,col) of the piece currently
+     * @param endLoc The location (row,col) that the player wants to jump the piece to
+     * @return whether this jump is valid
+     */
+    public boolean validJump(int[] startLoc, int[] endLoc) {
+        int x1 = startLoc[0];
+        int y1 = startLoc[1];
+        int x2 = endLoc[0];
+        int y2 = endLoc[1];
+        char pieceType = Board.getValue(startLoc);
+
+        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
+            return false;
+        }
+
+        if (x2 > 7 || y2 > 7) { // target location has to be on the board
+            return false;
+        }
+
+        if (pieceType == 'b') {
+            // handle black pawn valid jumps
+            // y has to increment by 2, and x can either increment or decrement by 2
+            if ((y2 - y1 == 2 && (x2 - x1 == 2 || x2 - x1 == -2))) {
+                return true;
+            } else {
+                return false; // invalid move
+            }
+        }
+        else if (pieceType == 'r') {
+            // handle red pawn valid jumps
+            // y has to decrement by 2, and x can either increment or decrement by 2
+            if ((y2 - y1 == -2 && (x2 - x1 == 2 || x2 - x1 == -2))) {
+                return true;
+            } else {
+                return false; // invalid jump
+            }
+        }
+        else if (Character.isUpperCase(pieceType)) {
+            // handle red king valid jumps
+            // handle black king valid jumps
+            // y can either increment or decrement by 2, and so can x
+            if (((y2 - y1 == 2 || y2 - y1 == -2) && (x2 - x1 == 2 || x2 - x1 == -2))) {
+                return true;
+            } else {
+                return false; // invalid jump
+            }
+        }
+        else {
+            return false; // invalid piece type
         }
     }
 
@@ -126,7 +175,6 @@ public class Game {
      * Checks if a piece is valid for promotion, and then promotes it if so
      */
     public void promote(int[] pieceLocation, char player) {
-
     }
 
 
