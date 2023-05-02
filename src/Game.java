@@ -7,7 +7,7 @@ public class Game {
 
     private Deque<Board> boards = new LinkedList<Board>();
     private Board currBoard = new Board();
-    private int turnCt = 0;
+    private static int turnCt = 0;
 
     /**
      * Handles passing the turn between the two players and determining whether the moves the player
@@ -48,7 +48,7 @@ public class Game {
     /**
      * Determines if a selected piece by the player is valid to move or have jump
      */
-    public boolean validPieceToMove(int[] location) {
+    public static boolean validPieceToMove(int[] location) {
         // if selected piece to move matches player whose turn it is
         if ((Board.getValue(location) == 'b' || Board.getValue(location) == 'B') && turnCt%2 == 0) {
             return true;
@@ -58,7 +58,9 @@ public class Game {
             return true;
         }
 
-        return false;
+        else {
+            return false;
+        }
     }
 
     /**
@@ -67,7 +69,7 @@ public class Game {
      * @param endLoc The location (row,col) that the player wants to move the piece to
      * @return whether this move is valid
      */
-    public boolean validMove(int[] startLoc, int[] endLoc) {
+    public static boolean validMove(int[] startLoc, int[] endLoc) {
         int x1 = startLoc[0];
         int y1 = startLoc[1];
         int x2 = endLoc[0];

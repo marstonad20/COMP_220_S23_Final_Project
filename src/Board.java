@@ -25,32 +25,32 @@ public class Board {
      */
 
     public Board() {
-        currentBoard[0][0] = 'b';
-        currentBoard[0][1] = ' ';
-        currentBoard[0][2] = 'b';
-        currentBoard[0][3] = ' ';
-        currentBoard[0][4] = 'b';
-        currentBoard[0][5] = ' ';
-        currentBoard[0][6] = 'b';
-        currentBoard[0][7] = ' ';
+        currentBoard[0][0] = ' ';
+        currentBoard[0][1] = 'b';
+        currentBoard[0][2] = ' ';
+        currentBoard[0][3] = 'b';
+        currentBoard[0][4] = ' ';
+        currentBoard[0][5] = 'b';
+        currentBoard[0][6] = ' ';
+        currentBoard[0][7] = 'b';
 
-        currentBoard[1][0] = ' ';
-        currentBoard[1][1] = 'b';
-        currentBoard[1][2] = ' ';
-        currentBoard[1][3] = 'b';
-        currentBoard[1][4] = ' ';
-        currentBoard[1][5] = 'b';
-        currentBoard[1][6] = ' ';
-        currentBoard[1][7] = 'b';
+        currentBoard[1][0] = 'b';
+        currentBoard[1][1] = ' ';
+        currentBoard[1][2] = 'b';
+        currentBoard[1][3] = ' ';
+        currentBoard[1][4] = 'b';
+        currentBoard[1][5] = ' ';
+        currentBoard[1][6] = 'b';
+        currentBoard[1][7] = ' ';
 
-        currentBoard[2][0] = 'b';
-        currentBoard[2][1] = ' ';
-        currentBoard[2][2] = 'b';
-        currentBoard[2][3] = ' ';
-        currentBoard[2][4] = 'b';
-        currentBoard[2][5] = ' ';
-        currentBoard[2][6] = 'b';
-        currentBoard[2][7] = ' ';
+        currentBoard[2][0] = ' ';
+        currentBoard[2][1] = 'b';
+        currentBoard[2][2] = ' ';
+        currentBoard[2][3] = 'b';
+        currentBoard[2][4] = ' ';
+        currentBoard[2][5] = 'b';
+        currentBoard[2][6] = ' ';
+        currentBoard[2][7] = 'b';
 
         currentBoard[3][0] = ' ';
         currentBoard[3][1] = ' ';
@@ -158,6 +158,9 @@ public class Board {
      * @return the kind of checker piece in that space
      */
     public static char getValue(int[] loc) {
+//        int x = loc[0];
+//        int y = loc[1];
+
         return (currentBoard[loc[0]] [loc[1]]);
     }
 
@@ -167,10 +170,21 @@ public class Board {
      * @param loc location array of board coords for set value
      * @param p   character to set space to
      */
-    public void setValue(int[] loc, char p) {
+    public static void setValue(int[] loc, char p) {
 //        int x = loc[0];
 //        int y = loc[1];
 
         currentBoard[loc[0]] [loc[1]] = p;
+    }
+
+
+    public static void move(int[] start, int[] end, char player) {
+        // if starting space holds a piece and if move is valid
+        if (Game.validPieceToMove(start) && Game.validMove(start, end)) {
+            Board.setValue(end, player);
+            Board.setValue(start, ' ');
+        } else {
+            System.out.println("This is an invalid move, please try again");
+        }
     }
 }

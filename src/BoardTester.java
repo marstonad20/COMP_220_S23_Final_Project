@@ -19,8 +19,9 @@ public class BoardTester {
         int[] startLoc = {2,2};
         int [] endLoc = {4,4};
         System.out.println(testGame.validJump(startLoc, endLoc));
+        System.out.println();
 
-//        Board testBoard = new Board();
+        Board testBoard = new Board();
 //        System.out.println("testBoard [0,5] value: '" + Board.getValue(new int[] {0, 5}) + "'");                // should be ' ' (space)
 //        System.out.println(testBoard.getValue(new int[] {0, 5}));
 //        System.out.println("testBoard [5,0] value: '" + Board.getValue(new int[] {5, 0}) + "'");                // should be 'r'
@@ -30,9 +31,15 @@ public class BoardTester {
 //        System.out.println("testBoard with [4,1] set to r");
 //        testBoard.printBoard();
 
-//        Scanner in = new Scanner(System.in); // tests Game's getPlayerInput()
+        Scanner in = new Scanner(System.in); // tests Game's getPlayerInput()
 //        Game testGame = new Game();
 //        System.out.println(Arrays.toString(testGame.getPlayerInput(in)));
+
+        System.out.println("move with hardcoded location:");
+        System.out.println("is valid hardcoded starting loc? " + Game.validPieceToMove(new int[] {2,0}));
+        System.out.println("is valid hardcoded move? " + Game.validMove(new int[] {2,1}, new int[] {3,2}));
+        Board.move(new int[] {2,1}, new int[] {3,2}, 'b');
+        testBoard.printBoard();
 
 //        System.out.println("getValue of user entered location in testGame: ");
 //        System.out.println(Board.getValue(testGame.getPlayerInput(in)));
