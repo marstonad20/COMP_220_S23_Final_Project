@@ -117,8 +117,7 @@ public class Game {
         }
     }
 
-    //TODO: this will allow the a piece to jump in an arbitrary direction, not necessarily a direction that has
-    //TODO: a jumpable piece
+    //TODO: this will allow the a piece to jump in an arbitrary direction, not necessarily over a piece
     /**
      * Checks if a selected jump by the player is valid
      * @param startLoc The location (row,col) of the piece currently
@@ -136,7 +135,7 @@ public class Game {
             return false;
         }
 
-        if (x2 > 7 || y2 > 7) { // target location has to be on the board
+        if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
             return false;
         }
 
