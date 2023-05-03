@@ -135,7 +135,17 @@ public class Game {
             return false;
         }
 
-        char pieceType = Board.getValue(startLoc);
+        char pieceType = Board.getValue(startLoc); // the type of the jumping piece
+        char jumpedPiece = Board.getValue(new int[] {(Math.max(y1,y2) - 1), (Math.max(x1,x2) - 1)}); // the type of
+                                                                                                     // the jumped piece
+        // (credit to BROWNNJ20 for in-between piece checking logic)
+
+        if (jumpedPiece == ' ') {
+            return false;           // cannot jump over empty square
+        }
+        if (Character.toLowerCase(pieceType) == Character.toLowerCase(jumpedPiece)) {
+            return false;           // cannot jump over own piece
+        }
 
         if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
             return false;

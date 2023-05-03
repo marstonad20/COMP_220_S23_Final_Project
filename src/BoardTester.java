@@ -39,11 +39,21 @@ public class BoardTester {
     }
 
     @Test
-    public void validJumpTest() { //some clarification: this test does not check if a piece is in between the start
-                                  // and end locations. It merely checks that this is a valid 2-space move.
+    public void validJumpTest1() { // black jump
+        Board.setValue(new int[] {3,2}, 'r'); // temporarily setting this spot to a jumpable piece
         int[] startLoc = {2,1};
         int[] endLoc = {4,3};
         assertTrue(Game.validJump(startLoc,endLoc));
+        Board.setValue(new int[] {3,2}, ' '); // resetting this spot to empty
+    }
+
+    @Test
+    public void validJumpTest2() { // red jump
+        Board.setValue(new int[] {4,5}, 'b'); // temporarily setting this spot to a jumpable piece
+        int[] startLoc = {5,4};
+        int[] endLoc = {3,6};
+        assertTrue(Game.validJump(startLoc,endLoc));
+        Board.setValue(new int[] {4,5}, ' '); // resetting this spot to empty
     }
 
     @Test
@@ -55,8 +65,8 @@ public class BoardTester {
 
     @Test
     public void moveTest1() { // testing moving a black pawn
-        int[] startLoc = {2,1};
-        int[] endLoc = {3,2};
+        int[] startLoc = {1,6};
+        int[] endLoc = {2,5};
         Board.move(startLoc,endLoc);
         testBoard.printBoard();
         assertTrue(Board.getValue(startLoc) == ' ' && Board.getValue(endLoc) == 'b');
