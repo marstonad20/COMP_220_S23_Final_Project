@@ -178,6 +178,11 @@ public class Game {
      * Checks if a piece is valid for promotion, and then promotes it if so
      */
     public void promote(int[] pieceLocation, char player) {
+        if (player == 'b' && pieceLocation[0] == 7) {       // if black pawn reaches side other than starting side
+            Board.setValue(pieceLocation, 'B');
+        } else if (player == 'r' && pieceLocation[0] == 0) {
+            Board.setValue(pieceLocation, 'R');
+        }
     }
 
 
