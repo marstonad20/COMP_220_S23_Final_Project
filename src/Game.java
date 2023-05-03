@@ -74,13 +74,14 @@ public class Game {
         int y1 = startLoc[1];
         int x2 = endLoc[0];
         int y2 = endLoc[1];
-        char pieceType = Board.getValue(startLoc);
 
-        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
+        if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
             return false;
         }
 
-        if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
+        char pieceType = Board.getValue(startLoc);
+
+        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
             return false;
         }
 
@@ -129,13 +130,14 @@ public class Game {
         int y1 = startLoc[1];
         int x2 = endLoc[0];
         int y2 = endLoc[1];
-        char pieceType = Board.getValue(startLoc);
 
-        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
+        if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
             return false;
         }
 
-        if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
+        char pieceType = Board.getValue(startLoc);
+
+        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
             return false;
         }
 

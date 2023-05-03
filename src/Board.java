@@ -101,6 +101,9 @@ public class Board {
 
     }
 
+    /**
+     * Prints the current state of a Board object, representing the contents of its currentBoard
+     */
     public void printBoard() {
         // System.out.println("====================================");
 
@@ -178,7 +181,13 @@ public class Board {
         currentBoard[loc[0]] [loc[1]] = p;
     }
 
-
+    /**
+     * Takes a starting and an ending location for a piece, determines whether this change is a valid one-square
+     * move for that piece, and then sets the values of the starting location and ending location
+     * in accordance with the rules of checkers.
+     * @param start The location from which the checker is moving
+     * @param end The location to which the checker is moving
+     */
     public static void move(int[] start, int[] end) {
         // if starting space holds a piece and if move is valid
         if (Game.validMove(start, end)) {
@@ -189,6 +198,13 @@ public class Board {
         }
     }
 
+    /**
+     * Takes a starting and an ending location for a piece, determines whether this change is a valid two-square
+     * move (jump) for that piece, and then sets the values of the starting location, the jumped piece,
+     * and the ending location in accordance with the rules of checkers.
+     * @param start The location from which the checker is jumping
+     * @param end The location to which the checker is jumping
+     */
     public static void jump (int[] start, int[] end) {
         int x1 = start[0];
         int y1 = start[1];
