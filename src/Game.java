@@ -70,10 +70,10 @@ public class Game {
      * @return whether this move is valid
      */
     public static boolean validMove(int[] startLoc, int[] endLoc) {
-        int x1 = startLoc[0];
-        int y1 = startLoc[1];
-        int x2 = endLoc[0];
-        int y2 = endLoc[1];
+        int x1 = startLoc[1];
+        int y1 = startLoc[0];
+        int x2 = endLoc[1];
+        int y2 = endLoc[0];
 
         if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
             return false;
@@ -126,10 +126,10 @@ public class Game {
      * @return whether this jump is valid
      */
     public static boolean validJump(int[] startLoc, int[] endLoc) {
-        int x1 = startLoc[0];
-        int y1 = startLoc[1];
-        int x2 = endLoc[0];
-        int y2 = endLoc[1];
+        int x1 = startLoc[1];
+        int y1 = startLoc[0];
+        int x2 = endLoc[1];
+        int y2 = endLoc[0];
 
         if ((x2 > 7 || y2 > 7) || (x2 < 0 || y2 < 0)) { // target location has to be on the board
             return false;

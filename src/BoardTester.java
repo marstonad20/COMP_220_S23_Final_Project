@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,6 +51,24 @@ public class BoardTester {
         int[] startLoc = {2,1};
         int[] endLoc = {3,2};
         assertFalse(Game.validJump(startLoc,endLoc));
+    }
+
+    @Test
+    public void moveTest1() { // testing moving a black pawn
+        int[] startLoc = {2,1};
+        int[] endLoc = {3,2};
+        Board.move(startLoc,endLoc);
+        testBoard.printBoard();
+        assertTrue(Board.getValue(startLoc) == ' ' && Board.getValue(endLoc) == 'b');
+    }
+
+    @Test
+    public void moveTest2() { // testing moving a red pawn
+        int[] startLoc = {5,0};
+        int[] endLoc = {4,1};
+        Board.move(startLoc,endLoc);
+        testBoard.printBoard();
+        assertTrue(Board.getValue(startLoc) == ' ' && Board.getValue(endLoc) == 'r');
     }
 
 }

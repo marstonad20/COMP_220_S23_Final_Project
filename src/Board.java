@@ -162,9 +162,6 @@ public class Board {
      * @return the kind of checker piece in that space
      */
     public static char getValue(int[] loc) {
-//        int x = loc[0];
-//        int y = loc[1];
-
         return (currentBoard[loc[0]] [loc[1]]);
     }
 
@@ -175,9 +172,6 @@ public class Board {
      * @param p   character to set space to
      */
     public static void setValue(int[] loc, char p) {
-//        int x = loc[0];
-//        int y = loc[1];
-
         currentBoard[loc[0]] [loc[1]] = p;
     }
 
