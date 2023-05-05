@@ -102,6 +102,19 @@ public class Board {
     }
 
     /**
+     * Copy constructor for Board class
+     * Makes a deep copy
+     * @param toCopy the board that is to be copied
+     */
+    public Board (Board toCopy) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                currentBoard[i][j] = toCopy.currentBoard[i][j];
+            }
+        }
+    }
+
+    /**
      * Prints the current state of a Board object, representing the contents of its currentBoard
      */
     public void printBoard() {

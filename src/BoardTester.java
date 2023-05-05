@@ -145,4 +145,14 @@ public class BoardTester {
 
         assertEquals('B', Board.getValue(validPromo));
     }
+
+    @Test
+    public void copyTest() {
+        Board copiedBoard = new Board(testBoard);
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                assertEquals(copiedBoard.getValue(new int[] {i,j}), testBoard.getValue(new int[] {i,j}));
+            }
+        }
+    }
 }
