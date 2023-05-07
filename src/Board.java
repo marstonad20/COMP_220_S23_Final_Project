@@ -226,4 +226,29 @@ public class Board {
             System.out.println("This is an invalid jump, please try again");
         }
     }
+
+    /**
+     * Checks the board to see if either side has any pieces left
+     * @return Whether someone has won the game by eliminating the other's pieces
+     */
+    public boolean winState() {
+        boolean areRed = false;
+        boolean areBlack = false;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (Character.toLowerCase(getValue(new int[] {i,j})) == 'b') {
+                    areBlack = true;
+                }
+                if (Character.toLowerCase(getValue(new int[] {i,j})) == 'r') {
+                    areRed = true;
+                }
+            }
+        }
+
+        if (areRed && areBlack) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

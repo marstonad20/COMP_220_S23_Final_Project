@@ -5,16 +5,101 @@ import java.util.*;
  */
 public class Game {
 
-    private Deque<Board> boards = new LinkedList<Board>();
-    private Board currBoard = new Board();
-    private static int turnCt = 0;
+    private Deque<Board> boards;
+    private Board currBoard;
+    private static int turnCt;
+    private Scanner in;
+
+    public Game() {
+        currBoard = new Board();
+        boards = new LinkedList<Board>();
+        turnCt = 0;
+        in = new Scanner(System.in);
+    }
 
     /**
      * Handles passing the turn between the two players and determining whether the moves the player
      * wants to make are valid.
      */
     public void gameLoop() {
+        boards.add(currBoard); // always adds initial board to stack
 
+        // start of game loop
+        while (!currBoard.winState()) { // if red has not won the game, keep playing
+
+            // start of turn loop
+            System.out.println("Black's turn.");
+            currBoard.printBoard();
+            boolean validInput = false;
+            while (!validInput) {
+                // getting user input
+                System.out.println("Input location of checker you'd like to move.");
+                int[] start = getPlayerInput(in);
+                System.out.println("\nInput location you'd like to move the checker to.");
+                int[] end = getPlayerInput(in);
+                System.out.println();
+
+                // checking if it's a valid move
+                if (validMove(start, end) && Board.getValue(start) == 'b') {
+                    Board.move(start, end);
+                    boards.add(currBoard);
+                    turnCt++;
+                    currBoard.printBoard();
+                    validInput = true;
+                } else {
+                    // checking if it's a valid jump
+                    if (validJump(start, end) && Board.getValue(start) == 'b') {
+                        Board.jump(start, end);
+                        boards.add(currBoard);
+                        turnCt++;
+                        currBoard.printBoard();
+                        validInput = true;
+                    } else {
+                        // the player chose invalid locations
+                        System.out.println("Invalid move.");
+                    }
+                }
+            }
+
+            if (currBoard.winState()) {
+                System.out.println("Black wins!");
+                break; // black has won the game, cease playing
+            }
+            // start of turn loop
+            System.out.println("Red's turn.");
+            currBoard.printBoard();
+            validInput = false;
+            while (!validInput) {
+                // getting user input
+                System.out.println("Input location of checker you'd like to move.");
+                int[] start = getPlayerInput(in);
+                System.out.println("\nInput location you'd like to move the checker to.");
+                int[] end = getPlayerInput(in);
+                System.out.println();
+
+                // checking if it's a valid move
+                if (validMove(start, end) && Board.getValue(start) == 'r') {
+                    Board.move(start, end);
+                    boards.add(currBoard);
+                    turnCt++;
+                    currBoard.printBoard();
+                    validInput = true;
+                } else {
+                    // checking if it's a valid jump
+                    if (validJump(start, end) && Board.getValue(start) == 'r') {
+                        Board.jump(start, end);
+                        boards.add(currBoard);
+                        turnCt++;
+                        currBoard.printBoard();
+                        validInput = true;
+                    } else {
+                        // the player chose invalid locations
+                        System.out.println("Invalid move.");
+                    }
+                }
+            }
+        } // end of game loop
+        System.out.println("Red wins!");
     }
 
     /**
@@ -193,7 +278,6 @@ public class Game {
             Board.setValue(pieceLocation, 'R');
         }
     }
-
 
     /**
      * Gets the next most recent Board and makes it the current Board,
