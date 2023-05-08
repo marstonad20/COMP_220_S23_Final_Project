@@ -32,40 +32,73 @@ public class Game {
             currBoard.printBoard();
             boolean validInput = false;
             while (!validInput) {
-                // getting user input
+                // what checker does the player want to move?
                 System.out.println("Input location of checker you'd like to move.");
                 int[] start = getPlayerInput(in);
-                System.out.println("\nInput location you'd like to move the checker to.");
+                if (Character.toLowerCase(Board.getValue(start)) != 'b') {
+                    System.out.println("Invalid location or piece.");
+                    continue; // back to the start of the turn
+                }
+                HashSet<Move> validMoves;
+                validMoves = findMoves(start);
+                HashSet<Move> validJumps;
+                validJumps = findJumps(start);
+                if (!validMoves.isEmpty()) {
+                    System.out.println("Here are the valid moves for that piece: ");
+                    for (Move m : validMoves) {
+                        System.out.println(m.toString());
+                    }
+                }
+                if (!validJumps.isEmpty()) {
+                    System.out.println("Here are the valid jumps for that piece: ");
+                    for (Move j : validJumps) {
+                        System.out.println(j.toString());
+                    }
+                }
+                if (validMoves.isEmpty() && validJumps.isEmpty()) {
+                    System.out.println("That piece has no valid moves or jumps.");
+                    continue; // back to the start of the turn
+                }
+                System.out.print("Please input the ending location of the move or jump you like to make:");
                 int[] end = getPlayerInput(in);
-                System.out.println();
-
-                // checking if it's a valid move
-                if (validMove(start, end) && Board.getValue(start) == 'b') {
-                    Board.move(start, end);
+                Move playerMove = new Move(start, end);
+                if (validMoves.contains(playerMove)) { // execute move
+                    Board.move(start,end);
+                    promote(end,'b');
                     boards.add(currBoard);
+                    System.out.println("Do you want to undo this move? (Y for yes, anything else for no)");
+                    String undoAns = in.nextLine();
+                    if (undoAns.equals("Y")) {
+                        boards.pop(); // remove this last change from the board stack
+                        continue; // return to beginning of turn
+                    }
                     turnCt++;
                     currBoard.printBoard();
                     validInput = true;
-                } else {
-                    // checking if it's a valid jump
-                    if (validJump(start, end) && Board.getValue(start) == 'b') {
-                        Board.jump(start, end);
-                        boards.add(currBoard);
-                        turnCt++;
-                        currBoard.printBoard();
-                        validInput = true;
-                    } else {
-                        // the player chose invalid locations
-                        System.out.println("Invalid move.");
+                } else if (validJumps.contains(playerMove)) { // execute jump
+                    Board.jump(start,end);
+                    promote(end,'b');
+                    boards.add(currBoard);
+                    System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
+                    String undoAns = in.nextLine();
+                    if (undoAns.equals("Y")) {
+                        boards.pop(); // remove this last change from the board stack
+                        continue; // return to beginning of turn
                     }
+                    turnCt++;
+                    currBoard.printBoard();
+                    validInput = true;
+                }
+                else {
+                    System.out.println("Invalid input."); // back to the start of the turn
                 }
             }
-
             if (currBoard.winState()) {
                 System.out.println("Black wins!");
                 break; // black has won the game, cease playing
             }
-            // start of turn loop
+
+            // this is almost exactly the same as black's turn except for how a winState is checked for
             System.out.println("Red's turn.");
             currBoard.printBoard();
             validInput = false;
@@ -73,29 +106,62 @@ public class Game {
                 // getting user input
                 System.out.println("Input location of checker you'd like to move.");
                 int[] start = getPlayerInput(in);
-                System.out.println("\nInput location you'd like to move the checker to.");
+                if (Character.toLowerCase(Board.getValue(start)) != 'r') {
+                    System.out.println("Invalid location or piece.");
+                    continue;
+                }
+                HashSet<Move> validMoves;
+                validMoves = findMoves(start);
+                HashSet<Move> validJumps;
+                validJumps = findJumps(start);
+                if (!validMoves.isEmpty()) {
+                    System.out.println("Here are the valid moves for that piece: ");
+                    for (Move m : validMoves) {
+                        System.out.println(m.toString());
+                    }
+                }
+                if (!validJumps.isEmpty()) {
+                    System.out.println("Here are the valid jumps for that piece: ");
+                    for (Move j : validJumps) {
+                        System.out.println(j.toString());
+                    }
+                }
+                if (validMoves.isEmpty() && validJumps.isEmpty()) {
+                    System.out.println("That piece has no valid moves or jumps.");
+                    continue;
+                }
+                System.out.print("Please input the ending location of the move or jump you like to make:");
                 int[] end = getPlayerInput(in);
-                System.out.println();
-
-                // checking if it's a valid move
-                if (validMove(start, end) && Board.getValue(start) == 'r') {
-                    Board.move(start, end);
+                Move playerMove = new Move(start, end);
+                if (validMoves.contains(playerMove)) { // execute move
+                    Board.move(start,end);
+                    promote(end,'r');
                     boards.add(currBoard);
+                    System.out.println("Do you want to undo this move? (Y for yes, anything else for no)");
+                    String undoAns = in.nextLine();
+                    if (undoAns.equals("Y")) {
+                        boards.pop(); // remove this last change from the board stack
+                        continue; // return to beginning of turn
+                    }
                     turnCt++;
                     currBoard.printBoard();
                     validInput = true;
-                } else {
-                    // checking if it's a valid jump
-                    if (validJump(start, end) && Board.getValue(start) == 'r') {
-                        Board.jump(start, end);
-                        boards.add(currBoard);
-                        turnCt++;
-                        currBoard.printBoard();
-                        validInput = true;
-                    } else {
-                        // the player chose invalid locations
-                        System.out.println("Invalid move.");
+                } else if (validJumps.contains(playerMove)) {
+                    Board.jump(start,end);
+                    promote(end,'r');
+                    boards.add(currBoard);
+                    System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
+                    String undoAns = in.nextLine();
+                    if (undoAns.equals("Y")) {
+                        boards.pop(); // remove this last change from the board stack
+                        continue; // return to beginning of turn
                     }
+                    turnCt++;
+                    currBoard.printBoard();
+                    validInput = true;
+                }
+                else {
+                    System.out.println("Invalid input.");
                 }
             }
         } // end of game loop
@@ -280,10 +346,40 @@ public class Game {
     }
 
     /**
-     * Gets the next most recent Board and makes it the current Board,
-     * thus undoing a move
+     * Creates a set of Move objects and checks every adjacent space for valid move ending locations.
+     * Returns all possible moves.
+     * @param start The location of the piece that the player wants to move
+     * @return a set of locations to which the piece can move. This can be empty.
      */
-    public void undo() {
+    public HashSet<Move> findMoves(int[] start) {
+        HashSet<Move> validMoves = new HashSet<Move>();
+        for (int i = start[1] - 1; i < start[1] + 1; i++) {
+            for (int j = start[0] - 1; j < start[0] + 1; j++) {
+                boolean valid = validMove(start, new int[] {i,j});
+                if (valid) {
+                    validMoves.add(new Move(start, new int[] {i,j}));
+                }
+            }
+        }
+    return validMoves;
+    }
 
+    /**
+     * Creates a set of Move objects and checks every space that is two squares away from the starting location for
+     * valid jumps. Returns all possible jumps.
+     * @param start The location of the piece that the player wants to move
+     * @return a set of locations to which the piece can jump. This can be empty.
+     */
+    public HashSet<Move> findJumps(int[] start) {
+        HashSet<Move> validJumps = new HashSet<Move>();
+        for (int i = start[1] - 2; i < start[1] + 2; i++) {
+            for (int j = start[0] - 2; j < start[0] + 2; j++) {
+                boolean valid = validJump(start, new int[] {i,j});
+                if (valid) {
+                    validJumps.add(new Move(start, new int[] {i,j}));
+                }
+            }
+        }
+        return validJumps;
     }
 }
