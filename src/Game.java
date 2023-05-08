@@ -22,7 +22,7 @@ public class Game {
      * wants to make are valid.
      */
     public void gameLoop() {
-        boards.add(currBoard); // always adds initial board to stack
+        boards.addLast(currBoard); // always adds initial board to stack
 
         // start of game loop
         while (!currBoard.winState()) { // if red has not won the game, keep playing
@@ -65,28 +65,38 @@ public class Game {
                 if (validMoves.contains(playerMove)) { // execute move
                     Board.move(start,end);
                     promote(end,'b');
-                    boards.add(currBoard);
+                    boards.addLast(currBoard);
+                    currBoard.printBoard();
                     System.out.println("Do you want to undo this move? (Y for yes, anything else for no)");
-                    String undoAns = in.nextLine();
+                    String undoAns = in.next();
                     if (undoAns.equals("Y")) {
-                        boards.pop(); // remove this last change from the board stack
+                        boards.removeLast(); // remove this last change from the board stack
+                        if (boards.getLast() == null) {
+                            boards.addLast(new Board()); // if stack of boards is empty, add a fresh board
+                        }
+                        currBoard = boards.getLast();
+                        currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
                     turnCt++;
-                    currBoard.printBoard();
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) { // execute jump
                     Board.jump(start,end);
                     promote(end,'b');
-                    boards.add(currBoard);
+                    boards.addLast(currBoard);
+                    currBoard.printBoard();
                     System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
-                    String undoAns = in.nextLine();
+                    String undoAns = in.next();
                     if (undoAns.equals("Y")) {
-                        boards.pop(); // remove this last change from the board stack
+                        boards.removeLast(); // remove this last change from the board stack
+                        if (boards.getLast() == null) {
+                            boards.addLast(new Board()); // if stack of boards is empty, add a fresh board
+                        }
+                        currBoard = boards.getLast();
+                        currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
                     turnCt++;
-                    currBoard.printBoard();
                     validInput = true;
                 }
                 else {
@@ -136,11 +146,17 @@ public class Game {
                 if (validMoves.contains(playerMove)) { // execute move
                     Board.move(start,end);
                     promote(end,'r');
-                    boards.add(currBoard);
+                    boards.addLast(currBoard);
+                    currBoard.printBoard();
                     System.out.println("Do you want to undo this move? (Y for yes, anything else for no)");
-                    String undoAns = in.nextLine();
+                    String undoAns = in.next();
                     if (undoAns.equals("Y")) {
-                        boards.pop(); // remove this last change from the board stack
+                        boards.removeLast(); // remove this last change from the board stack
+                        if (boards.getLast() == null) {
+                            boards.addLast(new Board()); // if stack of boards is empty, add a fresh board
+                        }
+                        currBoard = boards.getLast();
+                        currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
                     turnCt++;
@@ -149,11 +165,17 @@ public class Game {
                 } else if (validJumps.contains(playerMove)) {
                     Board.jump(start,end);
                     promote(end,'r');
-                    boards.add(currBoard);
+                    boards.addLast(currBoard);
+                    currBoard.printBoard();
                     System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
-                    String undoAns = in.nextLine();
+                    String undoAns = in.next();
                     if (undoAns.equals("Y")) {
-                        boards.pop(); // remove this last change from the board stack
+                        boards.removeLast(); // remove this last change from the board stack
+                        if (boards.getLast() == null) {
+                            boards.addLast(new Board()); // if stack of boards is empty, add a fresh board
+                        }
+                        currBoard = boards.getLast();
+                        currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
                     turnCt++;
@@ -285,6 +307,10 @@ public class Game {
             return false;
         }
 
+        if ((Math.max(y1,y2) - 1) < 0 || (Math.max(x1,x2) - 1) < 0 ) {
+            return false; // the jumped piece is off the board
+        }
+
         char pieceType = Board.getValue(startLoc); // the type of the jumping piece
         char jumpedPiece = Board.getValue(new int[] {(Math.max(y1,y2) - 1), (Math.max(x1,x2) - 1)}); // the type of
                                                                                                      // the jumped piece
@@ -353,8 +379,8 @@ public class Game {
      */
     public HashSet<Move> findMoves(int[] start) {
         HashSet<Move> validMoves = new HashSet<Move>();
-        for (int i = start[1] - 1; i < start[1] + 1; i++) {
-            for (int j = start[0] - 1; j < start[0] + 1; j++) {
+        for (int i = start[0] - 1; i < start[0] + 2; i++) { // rows
+            for (int j = start[1] - 1; j < start[1] + 2; j++) { // cols
                 boolean valid = validMove(start, new int[] {i,j});
                 if (valid) {
                     validMoves.add(new Move(start, new int[] {i,j}));
@@ -372,8 +398,8 @@ public class Game {
      */
     public HashSet<Move> findJumps(int[] start) {
         HashSet<Move> validJumps = new HashSet<Move>();
-        for (int i = start[1] - 2; i < start[1] + 2; i++) {
-            for (int j = start[0] - 2; j < start[0] + 2; j++) {
+        for (int i = start[0] - 2; i < start[0] + 3; i++) {
+            for (int j = start[1] - 2; j < start[1] + 3; j++) {
                 boolean valid = validJump(start, new int[] {i,j});
                 if (valid) {
                     validJumps.add(new Move(start, new int[] {i,j}));
