@@ -35,12 +35,12 @@ public class Game {
                 // what checker does the player want to move?
                 System.out.println("Input location of checker you'd like to move.");
                 int[] start = getPlayerInput(in);
-                if (Character.toLowerCase(Board.getValue(start)) != 'b') {
+                if (Character.toLowerCase(currBoard.getValue(start)) != 'b') {
                     System.out.println("Invalid location or piece.");
                     continue; // back to the start of the turn
                 }
                 HashSet<Move> validMoves;
-                validMoves = findMoves(start);
+                validMoves = findMoves(start, currBoard);
                 HashSet<Move> validJumps;
                 validJumps = findJumps(start);
                 if (!validMoves.isEmpty()) {
@@ -63,8 +63,8 @@ public class Game {
                 int[] end = getPlayerInput(in);
                 Move playerMove = new Move(start, end);
                 if (validMoves.contains(playerMove)) { // execute move
-                    Board.move(start,end);
-                    promote(end,'b');
+                    currBoard.move(start,end);
+                    promote(end,'b', currBoard);
                     boards.addLast(currBoard);
                     currBoard.printBoard();
                     System.out.println("Do you want to undo this move? (Y for yes, anything else for no)");
@@ -74,15 +74,15 @@ public class Game {
                         if (boards.getLast() == null) {
                             boards.addLast(new Board()); // if stack of boards is empty, add a fresh board
                         }
-                        currBoard = boards.getLast();
+                        currBoard = boards.getLast(); //TODO it will just not reassign!!
                         currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
                     turnCt++;
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) { // execute jump
-                    Board.jump(start,end);
-                    promote(end,'b');
+                    currBoard.jump(start,end);
+                    promote(end,'b', currBoard);
                     boards.addLast(currBoard);
                     currBoard.printBoard();
                     System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
@@ -101,15 +101,15 @@ public class Game {
                             System.out.println("Another jump is available, would you like to jump again? (Y for yes, anything else for no)");
                             String jumpAgain = in.nextLine();
                             if (jumpAgain.equals("Y")) {
-                                Move.setStart(end[0], end[1]);
+                                playerMove.setStart(end[0], end[1]);
                                 System.out.println("Here are the valid jumps for that piece: ");
                                 for (Move j : validJumps) {
                                     System.out.println(j.toString());
                                 }
                                 System.out.println("Please input the next ending location of the jump you would like to make: ");
                                 end = getPlayerInput(in);
-                                Board.jump(start, end);
-                                promote(end, 'b');
+                                currBoard.jump(start, end);
+                                promote(end, 'b', currBoard);
                                 boards.add(currBoard);
                                 // TODO: needs updated undo prompt and actions
                                 System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
@@ -140,12 +140,12 @@ public class Game {
                 // getting user input
                 System.out.println("Input location of checker you'd like to move.");
                 int[] start = getPlayerInput(in);
-                if (Character.toLowerCase(Board.getValue(start)) != 'r') {
+                if (Character.toLowerCase(currBoard.getValue(start)) != 'r') {
                     System.out.println("Invalid location or piece.");
                     continue;
                 }
                 HashSet<Move> validMoves;
-                validMoves = findMoves(start);
+                validMoves = findMoves(start, currBoard);
                 HashSet<Move> validJumps;
                 validJumps = findJumps(start);
                 if (!validMoves.isEmpty()) {
@@ -168,8 +168,8 @@ public class Game {
                 int[] end = getPlayerInput(in);
                 Move playerMove = new Move(start, end);
                 if (validMoves.contains(playerMove)) { // execute move
-                    Board.move(start,end);
-                    promote(end,'r');
+                    currBoard.move(start,end);
+                    promote(end,'r', currBoard);
                     boards.addLast(currBoard);
                     currBoard.printBoard();
                     System.out.println("Do you want to undo this move? (Y for yes, anything else for no)");
@@ -187,8 +187,8 @@ public class Game {
                     currBoard.printBoard();
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) {
-                    Board.jump(start,end);
-                    promote(end,'r');
+                    currBoard.jump(start,end);
+                    promote(end,'r', currBoard);
                     boards.addLast(currBoard);
                     currBoard.printBoard();
                     System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
@@ -244,7 +244,9 @@ public class Game {
 
     /**
      * Determines if a selected piece by the player is valid to move or have jump
+     * Commented out because unused
      */
+    /*
     public static boolean validPieceToMove(int[] location) {
         // if selected piece to move matches player whose turn it is
         if ((Board.getValue(location) == 'b' || Board.getValue(location) == 'B') && turnCt%2 == 0) {
@@ -259,6 +261,7 @@ public class Game {
             return false;
         }
     }
+     */
 
     /**
      * Checks if a selected move by the player is valid
@@ -266,7 +269,7 @@ public class Game {
      * @param endLoc The location (row,col) that the player wants to move the piece to
      * @return whether this move is valid
      */
-    public static boolean validMove(int[] startLoc, int[] endLoc) {
+    public static boolean validMove(int[] startLoc, int[] endLoc, Board currBoard) {
         int x1 = startLoc[1];
         int y1 = startLoc[0];
         int x2 = endLoc[1];
@@ -276,9 +279,9 @@ public class Game {
             return false;
         }
 
-        char pieceType = Board.getValue(startLoc);
+        char pieceType = currBoard.getValue(startLoc);
 
-        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
+        if (!(currBoard.getValue(endLoc) == ' ')) { // target location has to be empty
             return false;
         }
 
@@ -321,7 +324,7 @@ public class Game {
      * @param endLoc The location (row,col) that the player wants to jump the piece to
      * @return whether this jump is valid
      */
-    public static boolean validJump(int[] startLoc, int[] endLoc) {
+    public static boolean validJump(int[] startLoc, int[] endLoc, Board currBoard) {
         int x1 = startLoc[1];
         int y1 = startLoc[0];
         int x2 = endLoc[1];
@@ -335,8 +338,8 @@ public class Game {
             return false; // the jumped piece is off the board
         }
 
-        char pieceType = Board.getValue(startLoc); // the type of the jumping piece
-        char jumpedPiece = Board.getValue(new int[] {(Math.max(y1,y2) - 1), (Math.max(x1,x2) - 1)}); // the type of
+        char pieceType = currBoard.getValue(startLoc); // the type of the jumping piece
+        char jumpedPiece = currBoard.getValue(new int[] {(Math.max(y1,y2) - 1), (Math.max(x1,x2) - 1)}); // the type of
                                                                                                      // the jumped piece
         // (credit to BROWNNJ20 for in-between piece checking logic)
 
@@ -347,7 +350,7 @@ public class Game {
             return false;           // cannot jump over own piece
         }
 
-        if (!(Board.getValue(endLoc) == ' ')) { // target location has to be empty
+        if (!(currBoard.getValue(endLoc) == ' ')) { // target location has to be empty
             return false;
         }
 
@@ -387,11 +390,11 @@ public class Game {
     /**
      * Checks if a piece is valid for promotion, and then promotes it if so
      */
-    public void promote(int[] pieceLocation, char player) {
+    public void promote(int[] pieceLocation, char player, Board currBoard) {
         if (player == 'b' && pieceLocation[0] == 7) {       // if black pawn reaches side other than starting side
-            Board.setValue(pieceLocation, 'B');
+            currBoard.setValue(pieceLocation, 'B');
         } else if (player == 'r' && pieceLocation[0] == 0) {
-            Board.setValue(pieceLocation, 'R');
+            currBoard.setValue(pieceLocation, 'R');
         }
     }
 
@@ -401,11 +404,11 @@ public class Game {
      * @param start The location of the piece that the player wants to move
      * @return a set of locations to which the piece can move. This can be empty.
      */
-    public HashSet<Move> findMoves(int[] start) {
+    public HashSet<Move> findMoves(int[] start, Board currBoard) {
         HashSet<Move> validMoves = new HashSet<Move>();
         for (int i = start[0] - 1; i < start[0] + 2; i++) { // rows
             for (int j = start[1] - 1; j < start[1] + 2; j++) { // cols
-                boolean valid = validMove(start, new int[] {i,j});
+                boolean valid = validMove(start, new int[] {i,j}, currBoard);
                 if (valid) {
                     validMoves.add(new Move(start, new int[] {i,j}));
                 }
@@ -424,7 +427,7 @@ public class Game {
         HashSet<Move> validJumps = new HashSet<Move>();
         for (int i = start[0] - 2; i < start[0] + 3; i++) {
             for (int j = start[1] - 2; j < start[1] + 3; j++) {
-                boolean valid = validJump(start, new int[] {i,j});
+                boolean valid = validJump(start, new int[] {i,j}, currBoard);
                 if (valid) {
                     validJumps.add(new Move(start, new int[] {i,j}));
                 }

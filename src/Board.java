@@ -9,11 +9,11 @@ public class Board {
     /**
      * The number of rows and columns in a square checkers board
      */
-    private static final int SIZE = 8;
+    private final int SIZE = 8;
     /**
      * 2D array representing state of checkers board
      */
-    private static char[][] currentBoard = new char[SIZE][SIZE];
+    private char[][] currentBoard = new char[SIZE][SIZE];
 
     /**
      * Creates a checkers board with the checkers arrayed in the
@@ -174,7 +174,7 @@ public class Board {
      * @param loc integer array of coords on the board representing a location
      * @return the kind of checker piece in that space
      */
-    public static char getValue(int[] loc) {
+    public char getValue(int[] loc) {
         return (currentBoard[loc[0]] [loc[1]]);
     }
 
@@ -184,7 +184,7 @@ public class Board {
      * @param loc location array of board coords for set value
      * @param p   character to set space to
      */
-    public static void setValue(int[] loc, char p) {
+    public void setValue(int[] loc, char p) {
         currentBoard[loc[0]] [loc[1]] = p;
     }
 
@@ -195,11 +195,11 @@ public class Board {
      * @param start The location from which the checker is moving
      * @param end The location to which the checker is moving
      */
-    public static void move(int[] start, int[] end) {
+    public void move(int[] start, int[] end) {
         // if starting space holds a piece and if move is valid
-        if (Game.validMove(start, end)) {
-            Board.setValue(end, Board.getValue(start));
-            Board.setValue(start, ' ');
+        if (Game.validMove(start, end, this)) {
+            setValue(end, getValue(start));
+            setValue(start, ' ');
         } else {
             System.out.println("This is an invalid move, please try again");
         }
@@ -212,16 +212,16 @@ public class Board {
      * @param start The location from which the checker is jumping
      * @param end The location to which the checker is jumping
      */
-    public static void jump (int[] start, int[] end) {
+    public void jump (int[] start, int[] end) {
         int x1 = start[0];
         int y1 = start[1];
         int x2 = end[0];
         int y2 = end[1];
 
-        if (Game.validJump(start, end)) {
-            Board.setValue(end, Board.getValue(start));
-            Board.setValue(start, ' ');
-            Board.setValue(new int[] {(Math.max(x1,x2) - 1), (Math.max(y1,y2) - 1)}, ' ');
+        if (Game.validJump(start, end, this)) {
+            setValue(end, getValue(start));
+            setValue(start, ' ');
+            setValue(new int[] {(Math.max(x1,x2) - 1), (Math.max(y1,y2) - 1)}, ' ');
         } else {
             System.out.println("This is an invalid jump, please try again");
         }
