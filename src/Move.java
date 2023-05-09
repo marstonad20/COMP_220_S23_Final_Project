@@ -4,8 +4,8 @@ import java.util.Arrays;
  * Holds the starting location and the ending location of a checkers move or jump
  */
 public class Move {
-    private int[] start;
-    private int[] end;
+    private static int[] start;
+    private static int[] end;
 
     /**
      * Constructor
@@ -19,10 +19,10 @@ public class Move {
     public int[] getStart() {
         return start;
     }
-    public void setStart(int row, int col) {
+    public static void setStart(int row, int col) {
         start = new int[] {row, col};
     }
-    public int[] getEnd() {
+    public static int[] getEnd() {
         return end;
     }
     public void setEnd(int row, int col) {
