@@ -59,7 +59,7 @@ public class Game {
                     System.out.println("That piece has no valid moves or jumps.");
                     continue; // back to the start of the turn
                 }
-                System.out.print("Please input the ending location of the move or jump you like to make:");
+                System.out.println("Please input the ending location of the move or jump you like to make: ");
                 int[] end = getPlayerInput(in);
                 Move playerMove = new Move(start, end);
                 if (validMoves.contains(playerMove)) { // execute move
@@ -95,6 +95,30 @@ public class Game {
                         currBoard = boards.getLast();
                         currBoard.printBoard();
                         continue; // return to beginning of turn
+                    } else if (findJumps(end).size() != 0) {
+                        // check if there are more valid jumps from previous jump's ending location for color whose turn it is
+                        while (!findJumps(end).isEmpty()) {     // need to make sure I did not soft lock player with invalid move in chained jump
+                            System.out.println("Another jump is available, would you like to jump again? (Y for yes, anything else for no)");
+                            String jumpAgain = in.nextLine();
+                            if (jumpAgain.equals("Y")) {
+                                Move.setStart(end[0], end[1]);
+                                System.out.println("Here are the valid jumps for that piece: ");
+                                for (Move j : validJumps) {
+                                    System.out.println(j.toString());
+                                }
+                                System.out.println("Please input the next ending location of the jump you would like to make: ");
+                                end = getPlayerInput(in);
+                                Board.jump(start, end);
+                                promote(end, 'b');
+                                boards.add(currBoard);
+                                // TODO: needs updated undo prompt and actions
+                                System.out.println("Do you want to undo this jump? (Y for yes, anything else for no)");
+                                undoAns = in.nextLine();
+                                if (undoAns.equals("Y")) {
+                                    boards.pop(); // remove last change from the board stack
+                                }
+                            }
+                        }
                     }
                     turnCt++;
                     validInput = true;
