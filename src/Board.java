@@ -14,7 +14,6 @@ public class Board {
      * 2D array representing state of checkers board
      */
     private char[][] currentBoard = new char[SIZE][SIZE];
-
     /**
      * Creates a checkers board with the checkers arrayed in the
      * starting pattern
