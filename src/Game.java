@@ -22,7 +22,7 @@ public class Game {
      * wants to make are valid.
      */
     public void gameLoop() {
-        boards.addLast(currBoard); // always adds initial board to stack
+        boards.push(currBoard); // always adds initial board to stack
 
         // start of game loop
         while (!currBoard.winState()) { // if red has not won the game, keep playing
@@ -66,37 +66,41 @@ public class Game {
                 if (validMoves.contains(playerMove)) { // execute move
                     currBoard.move(start,end);
                     promote(end,'b', currBoard);
-                    boards.addLast(currBoard);
+                    boards.push(currBoard);
                     currBoard.printBoard();
-                    System.out.println("Undo move? (Y for yes)");
+                    System.out.println("Undo move? (Y or y for yes)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
-                        System.out.println("Undo loop entered");
+                        System.out.println("Undo loop entered, please enter a valid move.");
                         boards.removeLast(); // remove this last change from the board stack
                         currBoard = boards.getLast(); //TODO: not seeming to access last Board
+                        System.out.println("Print 'more' direct access to boards");
                         boards.getLast().printBoard();
+                        System.out.println("Print reassigned currBoard");
+                        currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
                     turnCt++;
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) { // execute jump
+                    // TODO: any changes to chain jump only done to black version until working
                     currBoard.jump(start,end);
                     promote(end,'b', currBoard);
-                    boards.addLast(currBoard);
+                    boards.push(currBoard);
                     currBoard.printBoard();
-                    System.out.println("Undo jump? (Y for yes)");
+                    System.out.println("Undo jump? (Y or y for yes)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
                         boards.removeLast(); // remove this last change from the board stack
                         currBoard = boards.getLast();
                         currBoard.printBoard();
                         continue; // return to beginning of turn
-                    } else if (findJumps(end).size() != 0) {
+                    } else if (findJumps(end).size() != 0) {    //
                         // check if there are more valid jumps from previous jump's ending location for color whose turn it is
-                        while (!findJumps(ender).isEmpty()) {     // need to make sure I did not soft lock player with invalid move in chained jump
-                            System.out.println("Another jump is available, would you like to jump again? (Y for yes, anything else for no)");
+                            System.out.println("Another jump is available, would you like to jump again? (Y or y for yes, anything else for no)");
                             String jumpAgain = in.nextLine();
-                            if (jumpAgain.equals("Y")) {
+                            // if another jump, is chosen to take, then enter jump again loop
+                            if (jumpAgain.equals("Y") || (jumpAgain.equals("y"))) {
                                 playerMove.setStart(end[0], end[1]);
                                 System.out.println("Here are the valid jumps for that piece: ");
                                 start = ender;
@@ -109,16 +113,18 @@ public class Game {
                                 if (validJumps.contains(playerMove)) { // execute jump
                                     currBoard.jump(start, end);
                                     promote(end, 'b', currBoard);
-                                    boards.addLast(currBoard);
+                                    boards.push(currBoard);
                                     currBoard.printBoard();
                                 }
                                 System.out.println("Undo jump? (Y for yes)");
                                 undoAns = in.nextLine();
                                 if (undoAns.equals("Y") || undoAns.equals("y")) {
-                                    boards.pop(); // remove last change from the board stack
+                                    boards.removeLast(); // remove this last change from the board stack
+                                    currBoard = boards.getLast();
+                                    currBoard.printBoard();
+                                    continue; // return to beginning of turn
                                 }
                             }
-                        }
                     }
                     turnCt++;
                     validInput = true;
@@ -171,7 +177,7 @@ public class Game {
                 if (validMoves.contains(playerMove)) { // execute move
                     currBoard.move(start,end);
                     promote(end,'r', currBoard);
-                    boards.addLast(currBoard);
+                    boards.push(currBoard);
                     currBoard.printBoard();
                     System.out.println("Undo move? (Y for yes)");
                     String undoAns = in.next();
@@ -187,7 +193,7 @@ public class Game {
                 } else if (validJumps.contains(playerMove)) {
                     currBoard.jump(start,end);
                     promote(end,'r', currBoard);
-                    boards.addLast(currBoard);
+                    boards.push(currBoard);
                     currBoard.printBoard();
                     System.out.println("Undo jump? (Y for yes)");
                     String undoAns = in.next();
@@ -214,13 +220,13 @@ public class Game {
                             if (validJumps.contains(playerMove)) { // execute jump
                                 currBoard.jump(start, end);
                                 promote(end, 'b', currBoard);
-                                boards.addLast(currBoard);
+                                boards.push(currBoard);
                                 currBoard.printBoard();
                             }
                             System.out.println("Undo jump? (Y for yes)");
                             undoAns = in.nextLine();
                             if (undoAns.equals("Y") || undoAns.equals("y")) {
-                                boards.pop(); // remove last change from the board stack
+                                boards.removeLast(); // remove last change from the board stack
                             }
                         }
                     }
