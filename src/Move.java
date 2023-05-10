@@ -16,19 +16,6 @@ public class Move {
         this.start = start;
         this.end = end;
     }
-    public int[] getStart() {
-        return start;
-    }
-    public void setStart(int row, int col) {
-        start = new int[] {row, col};
-    }
-    public int[] getEnd() {
-        return this.end;
-    }
-    public void setEnd(int row, int col) {
-        end = new int[] {row, col};
-    }
-
     /**
      * Returns a text representation of the move.
      * @return A String to print that represents the move with text.

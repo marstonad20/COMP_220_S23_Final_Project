@@ -7,13 +7,11 @@ public class Game {
 
     private Deque<Board> boards;
     public Board currBoard;
-    private int turnCt;
     private Scanner in;
 
     public Game() {
         currBoard = new Board();
         boards = new LinkedList<Board>();
-        turnCt = 0;
         in = new Scanner(System.in);
     }
 
@@ -25,7 +23,7 @@ public class Game {
         boards.addLast(new Board(currBoard)); // always adds initial board to stack
 
         // start of game loop
-        while (!currBoard.winState()) { // if red has not won the game, keep playing
+        while (!currBoard.winState()) { // if no player has not won the game, keep playing
 
             // start of turn loop
             System.out.println("Black's turn.");
@@ -82,10 +80,8 @@ public class Game {
                         currBoard.printBoard();
                         continue; // return to beginning of turn
                     }
-                    turnCt++;
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) { // execute jump
-                    // TODO: any changes to chain jump only done to black version until working
                     currBoard.jump(start,end);
                     promote(end,'b', currBoard);
                     boards.addFirst(new Board(currBoard));
@@ -93,12 +89,11 @@ public class Game {
                     System.out.println("Undo jump? (Y or y for yes, n for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
-                        boards.removeLast(); // remove this last change from the board stack
+                        boards.removeLast();
                         currBoard = new Board(boards.getLast());
                         currBoard.printBoard();
-//                        continue; // return to beginning of turn
                     }
-                    if (!findJumps(ender).isEmpty()) {     // need to make sure I did not soft lock player with invalid move in chained jump
+                    if (!findJumps(ender).isEmpty()) {
                         System.out.println("Another jump is available, would you like to make another jump? (Type 'Y' or 'y' for yes, anything else for no");
                         String jumpAgain = in.next();
                         while ((jumpAgain.equals("Y")) || jumpAgain.equals("y")) {
@@ -112,7 +107,6 @@ public class Game {
                             promote(end, 'b', currBoard);
                             ender = end;
                             currBoard.printBoard();
-//                            System.out.println("Is another jump available? (Y or y for yes)");
                             if (findJumps(ender).isEmpty()) {
                                 System.out.println("No further jumps are available for this piece, next player's turn.");
                                 jumpAgain = "no";
@@ -122,12 +116,8 @@ public class Game {
                             }
                         }
                     }
-                    turnCt++;
                     validInput = true;
                 }
-//                else {
-//                    System.out.println("Invalid input."); // back to the start of the turn
-//                }
             }
             if (currBoard.winState()) {
                 System.out.println("Black wins!");
@@ -179,7 +169,7 @@ public class Game {
                     promote(end,'r', currBoard);
                     boards.push(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo move? (Y or y for yes, n for no)");
+                    System.out.println("Undo move? (Y or y for yes anything else for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
                         System.out.println("Undo loop entered, please enter a valid move.");
@@ -187,9 +177,7 @@ public class Game {
                         currBoard = new Board(boards.getLast());
                         System.out.println("Print reassigned currBoard");
                         currBoard.printBoard();
-//                        continue; // return to beginning of turn
                     }
-                    turnCt++;
                     currBoard.printBoard();
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) {
@@ -200,29 +188,28 @@ public class Game {
                     System.out.println("Undo jump? (Y or y for yes, n for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
-                        System.out.println("Undo loop entered, please enter a valid move.");
+                        System.out.println("Undo loop entered, please enter a corrected valid move.");
                         boards.removeLast(); // remove this last change from the board stack
                         currBoard = new Board(boards.getLast());
                         System.out.println("Print reassigned currBoard");
                         currBoard.printBoard();
-//                        continue; // return to beginning of turn
                     }
-                    if (!findJumps(ender).isEmpty()) {     // need to make sure I did not soft lock player with invalid move in chained jump
-                        System.out.println("Another jump is available, would you like to make another jump? (Type 'Y' or 'y' for yes, anything else for no");
+                    if (!findJumps(ender).isEmpty()) {
+                        System.out.println("Another jump is available, would you like to make another jump? (Type 'Y' or 'y' for yes, anything else for no)");
                         String jumpAgain = in.next();
                         while ((jumpAgain.equals("Y")) || jumpAgain.equals("y")) {
                             System.out.println("Here are the valid jumps for that piece: ");
                             validJumps = findJumps(ender);
                             for (Move j : validJumps) {
                                 System.out.println(j.toString());
-                            }                            System.out.println("Please input a new ending location for your chained jump");
+                            }
+                            System.out.println("Please input a new ending location for your chained jump");
                             end = getPlayerInput(in);
                             currBoard.jump(ender, end);
                             promote(end, 'r', currBoard);
                             ender = end;
                             currBoard.printBoard();
 
-//                            System.out.println("Is another jump available? (Y or y for yes)");
                             if (findJumps(ender).isEmpty()) {
                                 System.out.println("No further jumps are available for this piece, next player's turn.");
                                 jumpAgain = "no";
@@ -232,7 +219,6 @@ public class Game {
                             }
                         }
                     }
-                    turnCt++;
                     currBoard.printBoard();
                     validInput = true;
                 }
@@ -274,27 +260,6 @@ public class Game {
         }
         return ints;
     }
-
-    /**
-     * Determines if a selected piece by the player is valid to move or have jump
-     * Commented out because unused
-     */
-    /*
-    public static boolean validPieceToMove(int[] location) {
-        // if selected piece to move matches player whose turn it is
-        if ((Board.getValue(location) == 'b' || Board.getValue(location) == 'B') && turnCt%2 == 0) {
-            return true;
-        }
-
-        if ((Board.getValue(location) == 'r' || Board.getValue(location) == 'R') && turnCt%2 == 1) {
-            return true;
-        }
-
-        else {
-            return false;
-        }
-    }
-     */
 
     /**
      * Checks if a selected move by the player is valid
@@ -373,7 +338,7 @@ public class Game {
 
         char pieceType = currBoard.getValue(startLoc); // the type of the jumping piece
         char jumpedPiece = currBoard.getValue(new int[] {(Math.max(y1,y2) - 1), (Math.max(x1,x2) - 1)}); // the type of
-                                                                                                     // the jumped piece
+                                                                                                         // the jumped piece
         // (credit to BROWNNJ20 for in-between piece checking logic)
 
         if (jumpedPiece == ' ') {

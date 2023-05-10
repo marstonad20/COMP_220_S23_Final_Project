@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.math.*;
-
 /**
  * Represents the state of a board in a game of Checkers
  */
@@ -120,7 +116,6 @@ public class Board {
      * Prints the current state of a Board object, representing the contents of its currentBoard
      */
     public void printBoard() {
-        // System.out.println("====================================");
 
         System.out.println();
 
@@ -165,8 +160,6 @@ public class Board {
         System.out.println(" 7 | " + currentBoard[7][0] + " | " + currentBoard[7][1] + " | " + currentBoard[7][2] + " | " +
                 currentBoard[7][3] + " | " + currentBoard[7][4] + " | " + currentBoard[7][5] + " | " + currentBoard[7][6]
                 + " | " + currentBoard[7][7] + " |");
-        // System.out.println("====================================");
-
         System.out.println();
     }
 
