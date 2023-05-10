@@ -13,7 +13,7 @@ public class Board {
     /**
      * 2D array representing state of checkers board
      */
-    private char[][] currentBoard = new char[SIZE][SIZE];
+    private char[][] currentBoard;
     /**
      * Creates a checkers board with the checkers arrayed in the
      * starting pattern
@@ -25,6 +25,8 @@ public class Board {
      */
 
     public Board() {
+        currentBoard = new char[SIZE][SIZE];
+
         currentBoard[0][0] = ' ';
         currentBoard[0][1] = 'b';
         currentBoard[0][2] = ' ';
@@ -106,9 +108,10 @@ public class Board {
      * @param toCopy the board that is to be copied
      */
     public Board (Board toCopy) {
+        this.currentBoard = new char[SIZE][SIZE];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                currentBoard[i][j] = toCopy.currentBoard[i][j];
+                this.currentBoard[i][j] = toCopy.currentBoard[i][j];
             }
         }
     }
