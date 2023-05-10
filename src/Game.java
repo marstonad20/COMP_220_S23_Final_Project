@@ -68,7 +68,7 @@ public class Game {
                     promote(end,'b', currBoard);
                     boards.addLast(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo move? (Y or y for yes)");
+                    System.out.println("Undo move? (Y or y for yes, n for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
                         System.out.println("Undo loop entered, please enter a valid move.");
@@ -86,7 +86,7 @@ public class Game {
                     promote(end,'b', currBoard);
                     boards.addFirst(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo jump? (Y or y for yes)");
+                    System.out.println("Undo jump? (Y or y for yes, n for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
                         boards.removeLast(); // remove this last change from the board stack
@@ -179,7 +179,7 @@ public class Game {
                     promote(end,'r', currBoard);
                     boards.push(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo move? (Y for yes)");
+                    System.out.println("Undo move? (Y or y for yes, n for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
                         System.out.println("Undo loop entered, please enter a valid move.");
@@ -197,7 +197,7 @@ public class Game {
                     promote(end,'r', currBoard);
                     boards.addLast(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo jump? (Y for yes)");
+                    System.out.println("Undo jump? (Y or y for yes, n for no)");
                     String undoAns = in.next();
                     if (undoAns.equals("Y") || undoAns.equals("y")) {
                         System.out.println("Undo loop entered, please enter a valid move.");
@@ -209,7 +209,7 @@ public class Game {
                     } else if (findJumps(end).size() != 0) {
                     // check if there are more valid jumps from previous jump's ending location for color whose turn it is
                     while (!findJumps(ender).isEmpty()) {     // need to make sure I did not soft lock player with invalid move in chained jump
-                        System.out.println("Another jump is available, would you like to jump again? (Y for yes, anything else for no)");
+                        System.out.println("Another jump is available, would you like to jump again? (Y for yes, n for no)");
                         String jumpAgain = in.nextLine();
                         if (jumpAgain.equals("Y")) {
                             playerMove.setStart(end[0], end[1]);
@@ -223,11 +223,11 @@ public class Game {
                             end = getPlayerInput(in);
                             if (validJumps.contains(playerMove)) { // execute jump
                                 currBoard.jump(start, end);
-                                promote(end, 'b', currBoard);
+                                promote(end, 'r', currBoard);
                                 boards.addLast(new Board(currBoard));
                                 currBoard.printBoard();
                             }
-                            System.out.println("Undo jump? (Y for yes)");
+                            System.out.println("Undo jump? (Y or y for yes, n for no)");
                             undoAns = in.nextLine();
                             if (undoAns.equals("Y") || undoAns.equals("y")) {
                                 boards.removeLast(); // remove last change from the board stack
@@ -244,8 +244,8 @@ public class Game {
                 }
             }
             if (currBoard.winState()) {
-                System.out.println("Black wins!");
-                break; // black has won the game, cease playing
+                System.out.println("Red wins!");
+                break; // red has won the game, cease playing
             }
         } // end of game loop
     }
