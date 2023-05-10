@@ -35,6 +35,10 @@ public class Game {
                 // what checker does the player want to move?
                 System.out.println("Input location of checker you'd like to move.");
                 int[] start = getPlayerInput(in);
+                if (start[0] > 7 || start[1] > 7 || start[0] < 0 || start[1] < 0) {
+                    System.out.println("Invalid location.");
+                    continue; // back to the start of the turn
+                }
                 if (Character.toLowerCase(currBoard.getValue(start)) != 'b') {
                     System.out.println("Invalid location or piece.");
                     continue; // back to the start of the turn
@@ -138,6 +142,10 @@ public class Game {
                 // getting user input
                 System.out.println("Input location of checker you'd like to move.");
                 int[] start = getPlayerInput(in);
+                if (start[0] > 7 || start[1] > 7 || start[0] < 0 || start[1] < 0) {
+                    System.out.println("Invalid location.");
+                    continue; // back to the start of the turn
+                }
                 if (Character.toLowerCase(currBoard.getValue(start)) != 'r') {
                     System.out.println("Invalid location or piece.");
                     continue;
