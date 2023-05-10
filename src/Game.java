@@ -191,7 +191,7 @@ public class Game {
                 } else if (validJumps.contains(playerMove)) {
                     currBoard.jump(start,end);
                     promote(end,'r', currBoard);
-                    boards.push(new Board(currBoard));
+                    boards.addLast(new Board(currBoard));
                     currBoard.printBoard();
                     System.out.println("Undo jump? (Y for yes)");
                     String undoAns = in.next();
@@ -218,7 +218,7 @@ public class Game {
                             if (validJumps.contains(playerMove)) { // execute jump
                                 currBoard.jump(start, end);
                                 promote(end, 'b', currBoard);
-                                boards.push(new Board(currBoard));
+                                boards.addLast(new Board(currBoard));
                                 currBoard.printBoard();
                             }
                             System.out.println("Undo jump? (Y for yes)");
