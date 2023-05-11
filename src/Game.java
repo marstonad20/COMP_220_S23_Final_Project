@@ -72,7 +72,7 @@ public class Game {
                     currBoard.printBoard();
                     System.out.println("Undo move? (Y or y for yes, n for no)");
                     String undoAns = in.next();
-                    if (undoAns.equals("Y") || undoAns.equals("y")) {
+                    if (undoAns.equals("Y") || undoAns.equals("y")) { // move undo for black
                         System.out.println("Undo loop entered, please enter a valid move.");
                         boards.removeLast(); // remove this last change from the board stack
                         currBoard = new Board(boards.getLast());
@@ -88,10 +88,11 @@ public class Game {
                     currBoard.printBoard();
                     System.out.println("Undo jump? (Y or y for yes, n for no)");
                     String undoAns = in.next();
-                    if (undoAns.equals("Y") || undoAns.equals("y")) {
-                        boards.removeLast();
+                    if (undoAns.equals("Y") || undoAns.equals("y")) { // jump undo for black
+//                        boards.removeLast();
                         currBoard = new Board(boards.getLast());
                         currBoard.printBoard();
+                        continue;
                     }
                     if (!findJumps(ender).isEmpty()) {
                         System.out.println("Another jump is available, would you like to make another jump? (Type 'Y' or 'y' for yes, anything else for no");
@@ -169,30 +170,28 @@ public class Game {
                     promote(end,'r', currBoard);
                     boards.push(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo move? (Y or y for yes anything else for no)");
+                    System.out.println("Undo round? (Y or y for yes anything else for no)");
                     String undoAns = in.next();
-                    if (undoAns.equals("Y") || undoAns.equals("y")) {
+                    if (undoAns.equals("Y") || undoAns.equals("y")) { // move undo for red
                         System.out.println("Undo loop entered, please enter a valid move.");
                         boards.removeLast(); // remove this last change from the board stack
                         currBoard = new Board(boards.getLast());
                         System.out.println("Print reassigned currBoard");
                         currBoard.printBoard();
+                        continue;
                     }
-                    currBoard.printBoard();
                     validInput = true;
                 } else if (validJumps.contains(playerMove)) {
                     currBoard.jump(start,end);
                     promote(end,'r', currBoard);
-                    boards.addLast(new Board(currBoard));
+                    boards.addFirst(new Board(currBoard));
                     currBoard.printBoard();
-                    System.out.println("Undo jump? (Y or y for yes, n for no)");
+                    System.out.println("Undo round? (Y or y for yes, anything else for no)");
                     String undoAns = in.next();
-                    if (undoAns.equals("Y") || undoAns.equals("y")) {
-                        System.out.println("Undo loop entered, please enter a corrected valid move.");
-                        boards.removeLast(); // remove this last change from the board stack
+                    if (undoAns.equals("Y") || undoAns.equals("y")) { // jump undo for red
                         currBoard = new Board(boards.getLast());
-                        System.out.println("Print reassigned currBoard");
                         currBoard.printBoard();
+                        continue;
                     }
                     if (!findJumps(ender).isEmpty()) {
                         System.out.println("Another jump is available, would you like to make another jump? (Type 'Y' or 'y' for yes, anything else for no)");
@@ -209,7 +208,6 @@ public class Game {
                             promote(end, 'r', currBoard);
                             ender = end;
                             currBoard.printBoard();
-
                             if (findJumps(ender).isEmpty()) {
                                 System.out.println("No further jumps are available for this piece, next player's turn.");
                                 jumpAgain = "no";
